@@ -19,11 +19,11 @@ public class Application {
 	
 	public static void main( String[] args ) {
 		
-    	Properties props = new Properties();
+		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
+					"javax.net.ssl.SSLSocketFactory");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
 
@@ -32,30 +32,30 @@ public class Application {
 					return new PasswordAuthentication("salewebdad@gmail.com","JesusAlvaroCesar");
 				}
 		});
-		
-		try {
+		while(true){
+			try {
 			
-			ServerSocket serverSocket = new ServerSocket (5555);
+				ServerSocket serverSocket = new ServerSocket (5555);
 			
-			Socket socket = serverSocket.accept();
-			BufferedReader leerCliente = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String linea = leerCliente.readLine();
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("salewebdad@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(linea));
-			message.setSubject("Confirmacion SaleWeb");
-			message.setText("Gracias por comprar en SaleWeb");
+				Socket socket = serverSocket.accept();
+				BufferedReader leerCliente = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				String linea = leerCliente.readLine();
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("salewebdad@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(linea));
+				message.setSubject("Confirmacion SaleWeb");
+				message.setText("Gracias por comprar en SaleWeb");
 
-			Transport.send(message);
+				Transport.send(message);
 
-			System.out.println("Done");
+				System.out.println("Done");
 
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
     }
-
 }

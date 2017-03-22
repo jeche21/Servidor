@@ -14,22 +14,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -52,13 +36,11 @@ public class Application {
 				}
 		});
 		
+		ServerSocket serverSocket;
 		System.out.println("SERVICIO INTERNO INICIADO");
-		
-		while(true){
-			try {
-			
-				ServerSocket serverSocket = new ServerSocket (5555);
-			
+		try {
+			serverSocket = new ServerSocket (5555);
+			while(true){
 				Socket socket = serverSocket.accept();
 				BufferedReader leerCliente = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String linea = leerCliente.readLine();
@@ -71,13 +53,12 @@ public class Application {
 				Transport.send(message);
 
 				System.out.println("Done");
-
-			} catch (MessagingException e) {
-				throw new RuntimeException(e);
 			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}catch (MessagingException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
